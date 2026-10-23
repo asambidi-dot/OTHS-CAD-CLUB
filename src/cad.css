@@ -1,0 +1,275 @@
+/* ============================================================
+   CAD artwork — shared drawing language for every illustration
+   ============================================================ */
+
+.cad-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.cad-art text {
+  font-family: var(--mono);
+}
+
+.cad-dark {
+  --cad-line: rgb(205 255 225 / 58%);
+  --cad-hidden: rgb(190 255 215 / 22%);
+  --cad-void: #010604;
+  --cad-recess: #040a07;
+  --cad-anno: rgb(150 225 180 / 62%);
+  --cad-label: #b4d0bd;
+  --cad-accent: #82dda0;
+  --cad-halo: #0e1411;
+}
+
+.cad-paper {
+  --cad-line: #123a25;
+  --cad-hidden: rgb(18 58 37 / 28%);
+  --cad-void: #0c2618;
+  --cad-recess: #0c2618;
+  --cad-anno: #3a8a5a;
+  --cad-label: #2d4d3a;
+  --cad-accent: #1f9a55;
+  --cad-halo: #ffffff;
+}
+
+.cad-edges,
+.cad-hidden,
+.cad-ghost,
+.cad-plane,
+.cad-dim path,
+.cad-callout path,
+.cad-sketch {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.cad-edges {
+  stroke: var(--cad-line);
+  stroke-width: 1;
+}
+
+.cad-hidden {
+  stroke: var(--cad-hidden);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.cad-ghost {
+  stroke: var(--cad-accent);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 4;
+}
+
+.cad-void {
+  fill: var(--cad-void);
+}
+
+.cad-recess {
+  fill: var(--cad-recess);
+  stroke: var(--cad-line);
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+
+
+
+
+
+.cad-plane {
+  fill: rgb(119 237 161 / 4%);
+  stroke: rgb(119 237 161 / 30%);
+  stroke-width: 1;
+}
+
+.cad-plane-label {
+  fill: rgb(170 240 200 / 62%);
+  font-family: var(--sans);
+  font-weight: 600;
+}
+
+
+.cad-sketch {
+  stroke: var(--cad-accent);
+  stroke-width: 1.6;
+}
+
+.cad-dim path,
+.cad-callout path {
+  stroke: var(--cad-anno);
+  stroke-width: 1;
+}
+
+.cad-arrow,
+.cad-dot {
+  fill: var(--cad-anno);
+  stroke: none;
+}
+
+.cad-dim .cad-arrow {
+  fill: var(--cad-anno);
+  stroke: none;
+}
+
+
+.cad-dim text,
+.cad-callout text,
+.cad-label {
+  fill: var(--cad-label);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  paint-order: stroke;
+  stroke: var(--cad-halo);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+/* ---------- Card and gallery details ---------- */
+
+.cad-plane-paper {
+  fill: rgb(31 154 85 / 5%);
+  stroke: rgb(31 154 85 / 35%);
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.cad-knot {
+  fill: #fff;
+  stroke: var(--cad-accent);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.cad-dark .cad-knot {
+  fill: #07120c;
+}
+
+.cad-flow {
+  fill: none;
+  stroke: var(--cad-anno);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+}
+
+.cad-flow-head,
+.cad-handle {
+  fill: none;
+  stroke: var(--cad-anno);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cad-handle {
+  stroke: #1a6b3e;
+  stroke-width: 2.4;
+}
+
+.cad-tick {
+  stroke: var(--cad-line);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.cad-progress {
+  fill: none;
+  stroke: var(--cad-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.cad-hand {
+  stroke: var(--cad-line);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.cad-cursor {
+  fill: #0e2318;
+  stroke: #fff;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.cad-sparkle {
+  fill: #3db06c;
+}
+
+.podium-number {
+  fill: #1c5a37;
+  font-family: var(--sans) !important;
+  font-weight: 750;
+}
+
+
+
+
+
+/* ---------- Process viewer layers ---------- */
+
+.cad-pencil {
+  fill: none;
+  stroke: rgb(200 240 215 / 78%);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cad-pencil.thin {
+  stroke-width: 1.1;
+  stroke-dasharray: 3 4;
+}
+
+.cad-note {
+  fill: rgb(200 240 215 / 72%);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.cad-idea path {
+  fill: none;
+  stroke: var(--cad-accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cad-sketch.thin {
+  stroke-width: 1;
+  stroke-opacity: 0.7;
+}
+
+.cad-highlight {
+  fill: none;
+  stroke: var(--cad-accent);
+  stroke-width: 2.2;
+  stroke-opacity: 0.85;
+  vector-effect: non-scaling-stroke;
+}
+
+.cad-engrave {
+  fill: #0d3a22;
+  font-family: var(--sans) !important;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.process-layer {
+  opacity: 0;
+  transition: opacity 450ms ease;
+}
+
+.process-layer[data-active="true"] {
+  opacity: 1;
+}
+
+
+
+.cad-arrow-paper {
+  fill: var(--cad-anno);
+}

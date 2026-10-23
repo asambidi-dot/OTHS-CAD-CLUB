@@ -1,0 +1,5 @@
+# Generated 3D assets and renders: never convert line endings
+*.glb binary
+*.blend binary
+*.hdr binary
+*.webp binary
