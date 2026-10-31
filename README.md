@@ -14,12 +14,12 @@ npm run preview   # serve the production build locally
 
 ## Design
 
-A black stage lit from above, with a slow starfield and floating geometric shapes in the hero,
-pill-shaped controls and one accent colour (the club's mint).
+A black stage lit from above, with a slow starfield behind the hero, pill-shaped controls and
+one accent colour (the club's mint).
 Type is Instrument Sans throughout, self-hosted through Fontsource, so nothing loads from a font
 CDN. The site sets no cookies and makes no requests to other sites.
 
-Six components come from [React Bits](https://reactbits.dev) and live in
+Five components come from [React Bits](https://reactbits.dev) and live in
 `src/components/reactbits/`, unmodified apart from dropping the Next.js-only `'use client'` line
 (Galaxy has one more change, noted below):
 
@@ -30,11 +30,9 @@ Six components come from [React Bits](https://reactbits.dev) and live in
 | `Carousel` | The meeting photos. Its arrow icons come from Hugeicons (`@hugeicons/react`). |
 | `Galaxy` | The white starfield behind the hero's light. It ignores the pointer and has no click warp or intro. |
 | `BorderGlow` | The "What we do" cards: the edge nearest the pointer glows mint while you hover a card. |
-| `DitherVeil` | The floating shapes in the hero: each is a mint dither of a rendered shape, with the full-colour render showing under the pointer. Uses `ogl`. |
 
 The colours these components ship with are swapped for the site's own: BorderGlow's purple, pink
-and blue border becomes mint, the Carousel's purple-tinted panels become neutral grey, and
-DitherVeil draws mint-white dots on black instead of its default ink and paper.
+and blue border becomes mint, and the Carousel's purple-tinted panels become neutral grey.
 
 Galaxy's cleanup no longer calls `loseContext()` on unmount. React's development Strict Mode
 unmounts and remounts every component once, and the remount was left with a dead WebGL context
@@ -80,15 +78,6 @@ To add a photo:
 Only post photos of members who are happy to appear on the site. The privacy policy promises
 that readable names and ID numbers are blurred, and that a photo comes down if someone in it asks.
 
-## Hero shapes
-
-The six shapes in `public/shapes/` (torus, cube, cone, puck, gem, pyramid) are Blender renders
-on a pure black background, 800 pixels square. DitherVeil reads black as its ink, and the shapes
-are screen-blended onto the hero, so the black disappears. To swap a shape, keep the same file
-name and use a square image of one object on pure black. Desktops show all six, tablets four and
-phones three; which ones appear where is set in `src/components/HeroShapes.jsx` and the
-`.hero-shape-*` rules in `src/styles.css`.
-
 ## Project structure
 
 ```
@@ -97,7 +86,6 @@ privacy/index.html           privacy policy page
 terms/index.html             terms and conditions page
 public/                      favicon.svg, favicon-32.png, apple-touch-icon.png
 public/photos/               meeting photos, two WebP sizes each
-public/shapes/               the floating hero shapes, rendered on pure black
 src/
   main.jsx                   entry for the home page
   legal.jsx                  entry for the privacy and terms pages
@@ -109,7 +97,6 @@ src/
   components/
     Navigation.jsx           PillNav with the club mark
     Hero.jsx                 headline, starfield, light rays and the Discord button
-    HeroShapes.jsx           the floating DitherVeil shapes around the headline
     About.jsx                short intro plus three facts
     Activities.jsx           "What we do" bento grid of BorderGlow cards
     Process.jsx              the four steps of designing a part
@@ -118,7 +105,7 @@ src/
     Join.jsx                 closing panel with Discord and Instagram
     Footer.jsx               links, including the privacy policy and terms
     LegalPage.jsx            layout for the privacy and terms pages
-    reactbits/               PillNav, LightRays, Carousel, Galaxy, BorderGlow and DitherVeil
+    reactbits/               PillNav, LightRays, Carousel, Galaxy and BorderGlow from React Bits
     ClubLogo.jsx, ClubSocialLinks.jsx, Icons.jsx
 ```
 
@@ -134,10 +121,10 @@ src/
   announce them as expandable.
 - Every photo has a written description. The carousel works with the arrow keys, and the full
   set opens in a native `<dialog>`: Escape closes it and focus goes back to where it was.
-- No content fades or slides in on scroll. Two effects follow the pointer: the edge glow on the
-  "What we do" cards and the colour reveal on the hero shapes. The starfield and light rays
-  ignore it. Under `prefers-reduced-motion`, the light rays, stars and floating shapes hold
-  still, the carousel jumps between photos instead of sliding, and transitions are instant.
+- No content fades or slides in on scroll. The one pointer effect is the edge glow on the
+  "What we do" cards while you hover them; the starfield and light rays ignore the pointer.
+  Under `prefers-reduced-motion`, the light rays and stars hold still, the carousel jumps
+  between photos instead of sliding, and transitions are instant.
 
 ## Deploy
 

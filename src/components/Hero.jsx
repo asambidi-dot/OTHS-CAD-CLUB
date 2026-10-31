@@ -1,6 +1,5 @@
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { CLUB_LINKS, external } from "./ClubSocialLinks";
-import HeroShapes from "./HeroShapes";
 import { ArrowRight, Discord } from "./Icons";
 import Galaxy from "./reactbits/Galaxy";
 import LightRays from "./reactbits/LightRays";
@@ -48,8 +47,6 @@ export default function Hero() {
           maxDevicePixelRatio={1.5}
         />
       </div>
-
-      <HeroShapes />
 
       <div className="hero-inner shell">
         <p className="hero-kicker">Student Club at Obra D. Tompkins High School</p>
