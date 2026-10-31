@@ -49,7 +49,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-inner shell">
-        <p className="hero-kicker">Student club at OTHS</p>
+        <p className="hero-kicker">Student Club at Obra D. Tompkins High School</p>
 
         <h1 id="hero-title" className="hero-title">
           OTHS CAD Club
