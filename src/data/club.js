@@ -2,52 +2,79 @@
  * Site content for the OTHS CAD Club.
  *
  *  - Discord and Instagram links: src/components/ClubSocialLinks.jsx
- *  - Meeting recaps and photos:   src/data/meetings.js
  *
  * Meeting times, rooms and announcements are posted on the Discord, so the
  * site points people there instead of listing dates.
  */
 export const club = {
   name: "OTHS CAD Club",
-  tagline: "One passion. Infinite creativity.",
+  summary: "A student club at OTHS for learning computer-aided design.",
 };
 
+/* Section ids double as the nav's anchors, in page order. */
 export const navLinks = [
   { id: "about", label: "About" },
-  { id: "activities", label: "Activities" },
-  { id: "projects", label: "Projects" },
-  { id: "meetings", label: "Meetings" },
+  { id: "activities", label: "What we do" },
+  { id: "photos", label: "Photos" },
+  { id: "faq", label: "FAQ" },
   { id: "join", label: "Join" },
 ];
 
+export const facts = [
+  {
+    title: "No experience needed",
+    text: "Beginner lessons start from the first sketch, and other members help when you get stuck.",
+  },
+  {
+    title: "Bring a laptop or Chromebook",
+    text: "We design in Onshape, which runs in a web browser, so there is nothing to install.",
+  },
+  {
+    title: "Everything is on Discord",
+    text: "Meeting times, rooms and announcements are posted in our Discord server.",
+  },
+];
+
+/* The bento grid. `size` sets how many columns a tile spans. */
 export const activities = [
   {
     id: "lessons",
-    number: "01",
+    size: "wide",
     title: "Beginner lessons",
     description:
       "Learn Onshape one step at a time, starting with sketches and simple parts. No experience needed.",
   },
   {
     id: "cadoffs",
-    number: "02",
     title: "CAD-offs",
     description:
       "Timed design challenges: everyone gets the same prompt, then we compare how each person solved it.",
   },
   {
     id: "realworld",
-    number: "03",
     title: "Real-world challenges",
     description:
       "Design parts for everyday problems, like a phone stand or a desk organizer, and check that they actually fit.",
   },
   {
+    id: "help",
+    title: "Help from members",
+    description:
+      "Stuck on a constraint or an extrude? Ask the person next to you, or post a screenshot in the Discord.",
+  },
+  {
+    id: "share",
+    title: "Share your designs",
+    description:
+      "Post what you're making, compare approaches after a CAD-off, and try the challenges other members set.",
+  },
+  {
     id: "tournaments",
-    number: "04",
+    size: "full",
     title: "Future tournaments",
     description:
       "Build the skills now for possible local and national CAD competitions later on.",
+    tag: "Later on",
   },
 ];
 
@@ -57,145 +84,148 @@ export const processSteps = [
     name: "Imagine",
     title: "Start with an idea",
     text: "Every design begins with a question: what should it do, and roughly how big should it be? A quick doodle on paper is plenty.",
-    feature: "Idea",
   },
   {
     id: "sketch",
     name: "Sketch",
     title: "Sketch it in 2D",
     text: "Draw a flat outline on a plane, then lock in exact sizes with dimensions and constraints so the shape behaves.",
-    feature: "Sketch 1",
   },
   {
     id: "model",
     name: "Model",
     title: "Model it in 3D",
     text: "Extrude the sketch into a solid part. Cut holes, add thickness, and combine simple shapes into something real.",
-    feature: "Extrude 1",
   },
   {
     id: "refine",
     name: "Refine",
     title: "Refine and repeat",
     text: "Round the sharp edges, check the fit, and improve. Change one dimension and the whole model updates with it.",
-    feature: "Fillet 1",
   },
 ];
 
-export const projectCategories = [
-  { id: "all", label: "All" },
-  { id: "mechanical", label: "Mechanical" },
-  { id: "everyday", label: "Everyday objects" },
-  { id: "geometric", label: "Geometric" },
+/*
+ * Photos from club meetings, in public/photos/. Each one is saved as WebP twice:
+ * <name>-640.webp and <name>-1280.webp (the photo's full width when that is less).
+ * Blur any readable names or student ID numbers before adding a photo.
+ * `width` and `height` are the full photo's size in pixels.
+ */
+export const meetingPhotos = [
+  {
+    name: "agenda",
+    width: 1200,
+    height: 1600,
+    alt: "Two members stand by a screen showing the agenda for the club's third meeting.",
+  },
+  {
+    name: "airplane-rules",
+    width: 1200,
+    height: 1600,
+    alt: "A member presents the rules of the paper airplane challenge to the club.",
+  },
+  {
+    name: "airplane-briefing",
+    width: 1200,
+    height: 1600,
+    alt: "A member smiles and makes a peace sign, with the paper airplane challenge on the screen behind.",
+  },
+  {
+    name: "airplane-folding",
+    width: 1200,
+    height: 1600,
+    alt: "Members fold a paper airplane at their table while the design steps are shown on screen.",
+  },
+  {
+    name: "airplanes",
+    width: 1600,
+    height: 1200,
+    alt: "Members hold up their finished paper airplanes.",
+  },
+  {
+    name: "questions",
+    width: 1200,
+    height: 1600,
+    alt: "Members sit at lab tables, and one raises a hand to answer a question.",
+  },
+  {
+    name: "onshape-workspace",
+    width: 1200,
+    height: 1600,
+    alt: "A member points out the parts of the Onshape workspace on a classroom screen.",
+  },
+  {
+    name: "onshape-sketch",
+    width: 1200,
+    height: 1600,
+    alt: "A member explains the sketch tools in Onshape, next to a slide on what sketch colours mean.",
+  },
+  {
+    name: "cube-pieces",
+    width: 900,
+    height: 1600,
+    alt: "Members fit the pieces of a cube puzzle together.",
+  },
+  {
+    name: "cube-solving",
+    width: 1600,
+    height: 900,
+    alt: "Members crowd around a table, working on a cube puzzle together.",
+  },
+  {
+    name: "cube-huddle-1",
+    width: 900,
+    height: 1600,
+    alt: "Members lean in around a table to work on a puzzle.",
+  },
+  {
+    name: "cube-huddle-2",
+    width: 900,
+    height: 1600,
+    alt: "Members watch as one of them works on a puzzle at the table.",
+  },
+  {
+    name: "cube-team",
+    width: 1600,
+    height: 900,
+    alt: "A group of members stands behind a table with the finished cube puzzle.",
+  },
 ];
 
-export const projects = [
+/*
+ * The three photos in the carousel, centre one first. `position` picks which part of
+ * a tall photo stays in view when the card crops it.
+ */
+export const featuredPhotos = [
+  { name: "airplanes", caption: "Paper airplane challenge" },
+  { name: "cube-team", caption: "Cube puzzle" },
+  { name: "onshape-workspace", caption: "Onshape lesson", position: "50% 22%" },
+];
+
+export const faqs = [
   {
-    id: "bracket",
-    model: "models/projects/bracket.glb",
-    thumb: "images/projects/bracket.webp",
-    title: "Mechanical bracket",
-    category: "mechanical",
-    level: "Beginner",
-    summary: "A bent L-bracket with stiffening ribs and bolt holes.",
-    description:
-      "Brackets hold the world together — shelves, robots, bike racks. This concept starts from one side profile, then adds the details that make a part strong and easy to bolt in place.",
-    skills: ["Sketch constraints", "Extrude", "Fillet", "Hole", "Mirror"],
-    steps: [
-      "Sketch the L-shaped side profile and dimension the thickness.",
-      "Extrude it to width and fillet the inside bend.",
-      "Add one triangular rib, then mirror it to the other side.",
-      "Place four mounting holes and check their spacing.",
-    ],
+    question: "Do I need any CAD experience?",
+    answer:
+      "No. Beginner lessons start from the very first sketch, and other members are happy to help when you get stuck. Every skill level is welcome.",
   },
   {
-    id: "gear",
-    model: "models/projects/gear.glb",
-    thumb: "images/projects/gear.webp",
-    title: "Spur gear",
-    category: "mechanical",
-    level: "Intermediate",
-    summary: "An 18-tooth gear with a keyed hub and a lightened web.",
-    description:
-      "Gears turn rotation into useful motion. Here you model a single tooth carefully, let a pattern do the repetitive work, and finish with a hub that fits a shaft.",
-    skills: ["Construction geometry", "Circular pattern", "Extrude remove", "Variables"],
-    steps: [
-      "Sketch the root and tip circles as construction geometry.",
-      "Draw one tooth and extrude the gear blank.",
-      "Circular-pattern the tooth 18 times around the center.",
-      "Add the hub, bore, keyway, and six lightening holes.",
-    ],
+    question: "What do I need to bring?",
+    answer:
+      "A laptop or Chromebook. We design in Onshape, which runs in a web browser, so there's nothing to install.",
   },
   {
-    id: "organizer",
-    model: "models/projects/organizer.glb",
-    thumb: "images/projects/organizer.webp",
-    title: "Desk organizer",
-    category: "everyday",
-    level: "Beginner",
-    summary: "A tray with a pen cup and compartments sized to real supplies.",
-    description:
-      "Measure what lives on your desk, then design around it. This concept is all about planning space: wall thickness, compartment sizes, and leaving room for your fingers.",
-    skills: ["Measuring", "Shell", "Extrude", "Fillet"],
-    steps: [
-      "Measure pens, sticky notes, and clips you want to store.",
-      "Sketch the footprint and extrude the base block.",
-      "Shell it into a tray, then add divider walls.",
-      "Add the pen cup and soften the top edges.",
-    ],
+    question: "When and where do you meet?",
+    answer:
+      "Meeting times, rooms and announcements are all posted on our Discord. Join the server and you'll see when the next one is.",
   },
   {
-    id: "hook",
-    model: "models/projects/hook.glb",
-    thumb: "images/projects/hook.webp",
-    title: "Headphone hook",
-    category: "everyday",
-    level: "Beginner",
-    summary: "An under-desk hook with a curved saddle that cradles the band.",
-    description:
-      "A small part with a real job. Model the hook from one sketch, then tune the saddle radius and arm length so it fits your desk and your headphones.",
-    skills: ["Arcs & tangency", "Extrude", "Hole", "Design for fit"],
-    steps: [
-      "Sketch the hook's side profile with tangent arcs.",
-      "Extrude it to a comfortable width.",
-      "Add countersunk screw holes to the mounting arm.",
-      "Test the fit against your desk thickness and adjust.",
-    ],
+    question: "How do I join?",
+    answer:
+      "Join our Discord server. That is how you become a member. Then come to a meeting and start your first part.",
   },
   {
-    id: "assembly",
-    model: "models/projects/assembly.glb",
-    thumb: "images/projects/assembly.webp",
-    title: "Geometric assembly",
-    category: "geometric",
-    level: "Intermediate",
-    summary: "Three solids stacked on one axis, mated and shown exploded.",
-    description:
-      "An introduction to assemblies: separate parts that fit together. Build a hexagonal base, a rotated block, and a pyramid, then mate them on a shared axis.",
-    skills: ["Multiple parts", "Assemblies", "Mate connectors", "Exploded views"],
-    steps: [
-      "Model the hex base, the block, and the pyramid as separate parts.",
-      "Insert all three into an assembly.",
-      "Add mate connectors on each touching face.",
-      "Fasten them on one axis and create an exploded view.",
-    ],
-  },
-  {
-    id: "planter",
-    model: "models/projects/planter.glb",
-    thumb: "images/projects/planter.webp",
-    title: "Faceted planter",
-    category: "geometric",
-    level: "Intermediate",
-    summary: "A low-poly hexagonal pot that swells out and tapers in.",
-    description:
-      "Simple shapes can look sculpted. Loft between three hexagons to get crisp facets, then hollow the pot out so it's ready for soil.",
-    skills: ["Planes", "Loft", "Shell", "Chamfer"],
-    steps: [
-      "Create three offset planes for the bottom, middle, and top.",
-      "Sketch a hexagon on each plane at a different size.",
-      "Loft through all three profiles.",
-      "Shell the top face open and chamfer the rim.",
-    ],
+    question: "What's a CAD-off?",
+    answer:
+      "A timed design challenge. Everyone gets the same prompt, then we compare how each person solved it.",
   },
 ];

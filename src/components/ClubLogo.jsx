@@ -2,8 +2,8 @@
  * OTHS CAD Club mark, rebuilt from the flyer logo.
  *
  * The flyer symbol is one closed loop of 18 square bars seen in isometric
- * view. One lobe is three bars — [-2,-1]×[0,5]×[6,7], [-2,5]×[4,5]×[6,7] and
- * [-2,-1]×[0,1]×[0,7] — and the other five lobes are its X/Y/Z axis
+ * view. One lobe is three bars ([-2,-1]×[0,5]×[6,7], [-2,5]×[4,5]×[6,7] and
+ * [-2,-1]×[0,1]×[0,7]), and the other five lobes are its X/Y/Z axis
  * permutations. These paths are that model's visible faces after exact
  * hidden-surface removal, so every bar is exactly one unit thick. The
  * shadowed faces follow the flyer's shading.

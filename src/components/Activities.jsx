@@ -1,41 +1,59 @@
 import { activities } from "../data/club";
-import { activityArt } from "./cad/ActivityArt";
+import { Help, Pencil, Ruler, Share, Timer, Trophy } from "./Icons";
+import BorderGlow from "./reactbits/BorderGlow";
+
+const icons = { lessons: Pencil, cadoffs: Timer, realworld: Ruler, help: Help, share: Share, tournaments: Trophy };
+
+/*
+ * BorderGlow from React Bits: the edge nearest the pointer lights up in the club's mint
+ * while you hover a card. Its default purple, pink and blue border is replaced with mint.
+ */
+const glow = {
+  backgroundColor: "#0b0b0c",
+  borderRadius: 28,
+  glowColor: "144 64 78",
+  colors: ["#a3ebc0", "#e6fff0", "#6fd6a0"],
+  glowIntensity: 0.8,
+  glowRadius: 32,
+  fillOpacity: 0.3,
+};
 
 export default function Activities() {
   return (
-    <section className="page-section activities-section" id="activities" aria-labelledby="activities-title">
+    <section className="section" id="activities" aria-labelledby="activities-title">
       <div className="shell">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">Activities</p>
-            <h2 id="activities-title" className="section-title">
-              Learn CAD. Make something.
-            </h2>
-          </div>
-          <p className="body-copy">
-            Start with a sketch, turn it into a model, and get help along the way.
-            These are the four ways we practice.
+        <header className="section-head">
+          <h2 id="activities-title" className="section-title">
+            What we do
+          </h2>
+          <p className="section-lede">
+            Beginner lessons, design challenges and help from other members, all in
+            Onshape.
           </p>
-        </div>
+        </header>
+
+        <ul className="bento" role="list">
+          {activities.map(({ id, size, title, description, tag }) => {
+            const Icon = icons[id];
+            return (
+              <li key={id} data-size={size}>
+                <BorderGlow className="tile" {...glow}>
+                  <div className="tile-body">
+                    <div className="tile-top">
+                      <span className="tile-icon">
+                        <Icon />
+                      </span>
+                      {tag && <span className="tile-tag">{tag}</span>}
+                    </div>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </BorderGlow>
+              </li>
+            );
+          })}
+        </ul>
       </div>
-
-      <div className="light-divider" aria-hidden="true" />
-
-      <ul className="activities shell" role="list">
-        {activities.map((activity) => {
-          const Art = activityArt[activity.id];
-          return (
-            <li className="activity-card" key={activity.id}>
-              <div className="activity-art">
-                <Art />
-              </div>
-              <span className="card-number">{activity.number}</span>
-              <h3>{activity.title}</h3>
-              <p>{activity.description}</p>
-            </li>
-          );
-        })}
-      </ul>
     </section>
   );
 }

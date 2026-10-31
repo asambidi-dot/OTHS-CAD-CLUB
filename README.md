@@ -1,8 +1,7 @@
 # OTHS CAD Club website
 
-A single-page site for the OTHS CAD Club, built with React, Vite and plain CSS.
-The hero is a real 3D model (a cutaway planetary gearbox) built in Blender and shown with
-React Three Fiber; the smaller illustrations are drawn in code as isometric SVG.
+The website for the OTHS CAD Club: a home page plus a privacy policy and terms and conditions,
+built with React, Vite and plain CSS.
 
 ## Run it
 
@@ -13,140 +12,119 @@ npm run build     # production build in dist/
 npm run preview   # serve the production build locally
 ```
 
-## 3D models (Blender → glTF)
+## Design
 
-Every model is generated procedurally in Blender, so it can be rebuilt or changed by editing a
-script. The website only loads the exported files; it never needs Blender.
+A black stage lit from above, with a slow starfield behind the hero, pill-shaped controls and
+one accent colour (the club's mint).
+Type is Instrument Sans throughout, self-hosted through Fontsource, so nothing loads from a font
+CDN. The site sets no cookies and makes no requests to other sites.
 
-| File | What it is |
+Five components come from [React Bits](https://reactbits.dev) and live in
+`src/components/reactbits/`, unmodified apart from dropping the Next.js-only `'use client'` line
+(Galaxy has one more change, noted below):
+
+| Component | Where it's used |
 | --- | --- |
-| `scripts/create_gearbox.py` | Builds the hero gearbox, checks the gear mesh, exports the GLB, bakes the studio HDR, renders the poster, saves the `.blend` |
-| `scripts/create_project_models.py` | Builds the practice-project parts, exports their GLBs and renders gallery thumbnails |
-| `scripts/cadkit.py` | Shared helpers (lathe, booleans, materials, export) used by both scripts |
-| `assets/blender/oths-gearbox.blend` | Editable Blender scene for the hero (parts, materials, camera, softbox studio) |
-| `public/models/oths-gearbox.glb` | Hero model: 59 named components with mechanism and explode data |
-| `public/images/oths-gearbox-poster.webp` | Poster rendered from the viewer's opening camera |
-| `public/env/studio-softbox.hdr` | The poster's softbox studio baked to an HDR, so the live model reflects the same lights |
-| `public/models/projects/*.glb`, `public/images/projects/*.webp` | Project models and thumbnails |
-| `src/data/gearboxSpec.js` | Hero configuration: asset paths, which controls to show, performance targets |
+| `PillNav` | The floating navigation. Its dot follows the section in view; it folds into a menu on phones. |
+| `LightRays` | The light falling over the hero, and rising behind the Join panel. |
+| `Carousel` | The meeting photos. Its arrow icons come from Hugeicons (`@hugeicons/react`). |
+| `Galaxy` | The white starfield behind the hero's light. It ignores the pointer and has no click warp or intro. |
+| `BorderGlow` | The "What we do" cards: the edge nearest the pointer glows mint while you hover a card. |
 
-Rebuild from the project root (Blender 4.2+, tested with 5.2.3):
+The colours these components ship with are swapped for the site's own: BorderGlow's purple, pink
+and blue border becomes mint, and the Carousel's purple-tinted panels become neutral grey.
 
-```bash
-blender --background --factory-startup --python scripts/create_gearbox.py
-blender --background --factory-startup --python scripts/create_project_models.py
-```
-
-`create_gearbox.py -- --no-render` skips the HDR and poster; `-- --views <folder>` also renders
-front, back, side, top, underside and exploded inspection views.
-
-### The gearbox
-
-Module 1.5, 20° pressure angle: an 18-tooth sun, three 27-tooth planets and a fixed 72-tooth
-ring (ring = sun + 2 × planet; (sun + ring) / 3 = 30, so three equally spaced planets mesh).
-The input shaft drives the sun and the carrier drives the output, for a 5 : 1 reduction. The
-script derives each planet's and the ring's tooth phase from the sun and fails the build if any
-mesh interferes at twelve positions of the running mechanism, or if a shaft, bearing, spigot or
-screw doesn't fit its hole.
-
-Conventions shared with the viewer:
-
-- Units are metres; Blender is Z-up and the exporter writes glTF Y-up. The gearbox axis is glTF Z.
-- Rotating nodes carry `drive` (`input`, `carrier` or `planet`, plus an optional `drive_factor`
-  for the bearing ball sets). The viewer turns them from the tooth counts on the `Gearbox` root
-  node, so the motion follows the gear relationships rather than per-part speeds.
-- Separating nodes carry `explode_axis` (glTF axes, parent space), `explode_distance` (metres) and
-  `explode_order` (0 leaves first and returns last).
-- `ViewCamera` stores the framing target and fill. The viewer refits the same vertices with the
-  same algorithm, so the live model opens exactly where the poster was taken.
-
-The viewer (`src/components/viewer/`) is React Three Fiber + drei, code-split so three.js only
-loads after the page. It renders on demand (only while something moves), stops the mechanism's
-render loop when the model is scrolled off screen, caps the pixel ratio at 1.5, and keeps the
-poster if WebGL is unavailable or the model fails to load.
+Galaxy's cleanup no longer calls `loseContext()` on unmount. React's development Strict Mode
+unmounts and remounts every component once, and the remount was left with a dead WebGL context
+that drew a solid white hero. Its shaders and buffers are still deleted on unmount.
 
 ## Where to change things
 
 | What | File |
 | --- | --- |
-| Discord invite and Instagram link (used everywhere) | `src/components/ClubSocialLinks.jsx` → `CLUB_LINKS` |
-| Meeting recaps and photos | `src/data/meetings.js` |
-| Activity cards, process steps, practice projects | `src/data/club.js` |
-| Club logo | `src/components/ClubLogo.jsx` (header/footer) and `public/favicon.svg` |
+| Discord invite and Instagram link (used everywhere) | `CLUB_LINKS` in `src/components/ClubSocialLinks.jsx` |
+| All home page copy: facts, activities, process, FAQ | `src/data/club.js` |
+| Meeting photos, their descriptions, and the three shown in the carousel | `meetingPhotos` and `featuredPhotos` in `src/data/club.js` |
+| Navigation items (also the section order) | `navLinks` in `src/data/club.js` |
+| Privacy policy and terms text, and their "Last updated" dates | `src/data/legal.js` |
+| Colours, spacing and type | the tokens at the top of `src/styles.css` |
+| Club logo | `src/components/ClubLogo.jsx` and `public/favicon.svg` |
+
+If the logo changes, also replace `public/favicon-32.png` (32 × 32) and
+`public/apple-touch-icon.png` (180 × 180), which are PNG copies of `favicon.svg` for browsers
+and phones that don't use SVG icons.
 
 Joining the club happens on Discord, and meeting times, rooms and announcements are posted
-there, so every "Join the club" button opens the Discord invite. The site doesn't list
-meeting dates.
+there, so every "Join" button opens the Discord invite. The site doesn't list meeting dates.
 
-## Log a meeting
+The privacy policy and terms are plain-language starting points written for this site. Have the
+club advisor or school review them, and update the date in `src/data/legal.js` whenever the
+text changes.
 
-1. Put the photos in `public/meetings/<date>/`, for example `public/meetings/2026-10-21/01.jpg`.
-   Resize them to about 1600px on the long side first so the page stays fast.
-2. Add an entry to `src/data/meetings.js`:
+## Meeting photos
 
-```js
-{
-  date: "2026-10-21",
-  title: "Sketch workspace basics",
-  type: "Lesson",
-  summary: "One or two sentences about what the club did.",
-  photos: [{ src: "meetings/2026-10-21/01.jpg", alt: "What the photo shows" }],
-  links: [{ label: "Slides", href: "https://..." }],
-},
-```
+The photos live in `public/photos/`. Each one is saved as WebP at two widths, `<name>-640.webp`
+and `<name>-1280.webp` (the photo's full width if it is narrower than 1280 pixels), with camera
+metadata removed. The carousel shows the three listed in `featuredPhotos`; the "See all"
+button, or a click on the middle photo, opens every photo in `meetingPhotos`.
 
-Only `date` and `title` are required. Entries are sorted newest first; the three most recent
-show by default with a "Show all" button, and photos open in a full-screen viewer.
-Only post photos that everyone in them is comfortable sharing.
+To add a photo:
 
-## Practice projects
+1. Blur any names or student ID numbers that can be read in it.
+2. Save the two WebP sizes in `public/photos/`.
+3. Add it to `meetingPhotos` with its full width, height and a short description (`alt`) of
+   what is happening in it.
 
-The gallery shows **practice project concepts**, labeled as such on every card and dialog.
-To add real member projects, edit the `projects` array in `src/data/club.js` and point each one at
-a model and thumbnail (or a photo of the real part).
+Only post photos of members who are happy to appear on the site. The privacy policy promises
+that readable names and ID numbers are blurred, and that a photo comes down if someone in it asks.
 
 ## Project structure
 
 ```
+index.html                   home page
+privacy/index.html           privacy policy page
+terms/index.html             terms and conditions page
+public/                      favicon.svg, favicon-32.png, apple-touch-icon.png
+public/photos/               meeting photos, two WebP sizes each
 src/
-  App.jsx                    page layout
+  main.jsx                   entry for the home page
+  legal.jsx                  entry for the privacy and terms pages
+  App.jsx                    home page layout, in section order
   styles.css                 design tokens, layout and responsive rules
-  cad.css                    shared drawing styles for the CAD artwork
-  data/club.js               site content
-  data/meetings.js           meeting log entries
-  hooks/useActiveSection.js  highlights the current section in the nav
-  lib/iso.js                 tiny isometric renderer (extrude, loft, shading, edges)
+  data/club.js               all home page content
+  data/legal.js              privacy policy and terms text
+  hooks/                     useActiveSection (nav highlight), useMediaQuery
   components/
-    ClubLogo.jsx             the club mark
-    ClubSocialLinks.jsx      Discord/Instagram links and buttons
-    IconFrame.jsx, Icons.jsx shared icon frame and 24-unit icons
-    Navigation.jsx           compact floating header with mobile menu
-    Hero.jsx                 headline + interactive 3D gearbox (CADHero3D)
-    CADHero3D.jsx            lazy-loads the hero viewer, poster as placeholder
-    viewer/                  ModelViewer (toolbar, keyboard, touch mode) and ViewerScene (three.js)
-    Activities.jsx           glowing divider + four white cards
-    About.jsx                CAD explainer + Imagine → Sketch → Model → Refine viewer
-    Projects.jsx             filterable gallery + detail dialog
-    MeetingLog.jsx           meeting recaps + photo viewer
-    Join.jsx                 Discord-first community panel
-    Footer.jsx
-    cad/                     SVG illustrations (activity cards, process viewer)
+    Navigation.jsx           PillNav with the club mark
+    Hero.jsx                 headline, starfield, light rays and the Discord button
+    About.jsx                short intro plus three facts
+    Activities.jsx           "What we do" bento grid of BorderGlow cards
+    Process.jsx              the four steps of designing a part
+    Photos.jsx               meeting photos: carousel and full gallery
+    Faq.jsx                  questions and answers
+    Join.jsx                 closing panel with Discord and Instagram
+    Footer.jsx               links, including the privacy policy and terms
+    LegalPage.jsx            layout for the privacy and terms pages
+    reactbits/               PillNav, LightRays, Carousel, Galaxy and BorderGlow from React Bits
+    ClubLogo.jsx, ClubSocialLinks.jsx, Icons.jsx
 ```
+
+`vite.config.js` lists all three HTML pages, so `npm run build` outputs `dist/index.html`,
+`dist/privacy/index.html` and `dist/terms/index.html`.
 
 ## Accessibility and motion
 
 - Semantic landmarks, a skip link, and visible focus rings on every control.
-- Section links land below the fixed header (`scroll-padding-top`).
-- The process viewer is a keyboard tablist (arrow keys, Home, End).
-- Project details and meeting photos open in native `<dialog>`s: Escape or a backdrop click
-  closes them, and ← / → step through items.
-- The 3D viewer never moves on its own. Run, explode, wireframe, reset, rotate and zoom are real
-  buttons; when the model has focus, arrow keys rotate, `+`/`−` zoom, Space runs or pauses the
-  mechanism, `E` explodes, `W` toggles wireframe and `R` resets. On touch screens, page scrolling
-  wins until you tap **Interact**.
-- Exploding pauses the mechanism; it only runs again when the visitor asks.
-- Under `prefers-reduced-motion`, transitions switch instantly and **Run** becomes **Step**,
-  which turns the input shaft a quarter turn per press instead of animating.
+- Section links land below the floating nav (`scroll-padding-top`), including links from the
+  privacy and terms pages back to a section of the home page.
+- FAQ answers use native `<details>`, so they open with Enter or Space and screen readers
+  announce them as expandable.
+- Every photo has a written description. The carousel works with the arrow keys, and the full
+  set opens in a native `<dialog>`: Escape closes it and focus goes back to where it was.
+- No content fades or slides in on scroll. The one pointer effect is the edge glow on the
+  "What we do" cards while you hover them; the starfield and light rays ignore the pointer.
+  Under `prefers-reduced-motion`, the light rays and stars hold still, the carousel jumps
+  between photos instead of sliding, and transitions are instant.
 
 ## Deploy
 
@@ -156,5 +134,5 @@ automatically, so the site works at `https://<user>.github.io/<repository-name>/
 
 One-time setup on GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-`npm run build` alone outputs a static site in `dist/` that any static host can serve. For a host
-that puts it in a subfolder, build with `npm run build -- --base=/that-folder/`.
+`npm run build` alone outputs a static site in `dist/` that any static host can serve
+(the club's Vercel project included).

@@ -1,4 +1,6 @@
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { ClubSocialLinks } from "./ClubSocialLinks";
+import LightRays from "./reactbits/LightRays";
 
 const steps = [
   [
@@ -10,27 +12,46 @@ const steps = [
 ];
 
 export default function Join() {
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+
   return (
-    <section className="page-section join-section" id="join" aria-labelledby="join-title">
+    <section className="section join" id="join" aria-labelledby="join-title">
       <div className="shell">
         <div className="join-panel">
-          <div className="join-intro">
-            <p className="eyebrow">Join the club</p>
-            <h2 id="join-title" className="section-title">
-              Your first design starts here.
-            </h2>
-            <p className="body-copy">
-              New to CAD? You can start here — no experience needed. Everything runs
-              through our Discord: joining the server is how you join the club.
-            </p>
-            <ClubSocialLinks />
+          {/* The same light as the hero, rising from below. It ignores the pointer. */}
+          <div className="join-rays" aria-hidden="true">
+            <LightRays
+              raysOrigin="bottom-center"
+              raysColor="#d9f9e5"
+              raysSpeed={reducedMotion ? 0 : 0.4}
+              lightSpread={1.1}
+              rayLength={1.2}
+              glow={0.7}
+              haze={0.35}
+              atmosphere={0.3}
+              saturation={0.6}
+              intensity={1.05}
+              followMouse={false}
+              cursorShadow={false}
+              clickPulse={false}
+              maxDevicePixelRatio={1.5}
+            />
           </div>
 
+          <h2 id="join-title" className="section-title join-title">
+            How to join
+          </h2>
+          <p className="section-lede">
+            Membership runs through our Discord server. Join the server, then come to a
+            meeting. No experience is needed.
+          </p>
+          <ClubSocialLinks />
+
           <ol className="join-steps">
-            {steps.map(([title, text], i) => (
+            {steps.map(([title, text], index) => (
               <li key={title}>
                 <span className="step-number" aria-hidden="true">
-                  {i + 1}
+                  {index + 1}
                 </span>
                 <div>
                   <h3>{title}</h3>
