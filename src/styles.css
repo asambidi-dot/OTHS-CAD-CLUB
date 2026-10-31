@@ -280,9 +280,15 @@ svg {
    Hero
    ============================================================ */
 
+/*
+ * The hero is its own isolated layer, so the floating shapes' screen blend only sees what is
+ * inside it. Painting the page colour here gives that blend a solid backdrop everywhere;
+ * without it, each shape's black square shows wherever the stars and light are absent.
+ */
 .hero {
   position: relative;
   isolation: isolate;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   min-block-size: 100svh;
@@ -309,13 +315,153 @@ svg {
   pointer-events: none;
 }
 
+/* ---------- Floating shapes ---------- */
+
+/* Clicks pass through the layer itself; only the shapes take the pointer. */
+.hero-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+ * Screen blending drops each dither's black ink, so only the light dots and the revealed
+ * render show over the stars. Each shape bobs on its own slow timing.
+ */
+.hero-shape {
+  position: absolute;
+  inline-size: var(--size);
+  aspect-ratio: 1;
+  mix-blend-mode: screen;
+  pointer-events: auto;
+  animation: shape-float var(--float, 8s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+@keyframes shape-float {
+  from {
+    transform: translate3d(0, -12px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+.hero-shape-torus {
+  --size: clamp(130px, 13vw, 220px);
+  --float: 9s;
+  top: 14%;
+  left: 4%;
+}
+
+.hero-shape-cube {
+  --size: clamp(110px, 11vw, 190px);
+  --float: 7.5s;
+  --delay: -3s;
+  top: 48%;
+  left: 2%;
+}
+
+.hero-shape-cone {
+  --size: clamp(110px, 10vw, 180px);
+  --float: 8.5s;
+  --delay: -5s;
+  top: 70%;
+  left: 15%;
+}
+
+.hero-shape-puck {
+  --size: clamp(120px, 12vw, 210px);
+  --float: 8s;
+  --delay: -2s;
+  top: 12%;
+  right: 5%;
+}
+
+.hero-shape-gem {
+  --size: clamp(110px, 11vw, 190px);
+  --float: 9.5s;
+  --delay: -6s;
+  top: 46%;
+  right: 2%;
+}
+
+.hero-shape-pyramid {
+  --size: clamp(120px, 11vw, 200px);
+  --float: 7s;
+  --delay: -4s;
+  top: 69%;
+  right: 15%;
+}
+
+/* Tablets show four shapes in the corners; these breakpoints match HeroShapes.jsx. */
+@media (max-width: 1023px) {
+  .hero-shape-torus {
+    --size: clamp(100px, 16vw, 150px);
+    top: 11%;
+    left: 3%;
+  }
+
+  .hero-shape-puck {
+    --size: clamp(96px, 15vw, 140px);
+    top: 10%;
+    right: 3%;
+  }
+
+  .hero-shape-cone {
+    --size: clamp(90px, 14vw, 130px);
+    top: auto;
+    bottom: 6%;
+    left: 5%;
+  }
+
+  .hero-shape-pyramid {
+    --size: clamp(90px, 14vw, 130px);
+    top: auto;
+    bottom: 7%;
+    right: 5%;
+  }
+}
+
+/*
+ * Phones show two small shapes between the nav and the text, plus the pyramid at the bottom
+ * on phones at least 760px tall (HeroShapes.jsx decides that).
+ */
+@media (max-width: 719px) {
+  .hero-shape-torus {
+    --size: 84px;
+    top: calc(var(--nav-top) + var(--nav-height) - 2px);
+    left: -14px;
+  }
+
+  .hero-shape-puck {
+    --size: 78px;
+    top: calc(var(--nav-top) + var(--nav-height) + 8px);
+    right: -6px;
+  }
+
+  .hero-shape-pyramid {
+    --size: 84px;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+/* The text sits above the shapes, but only the text itself takes the pointer. */
 .hero-inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   flex: 1;
   align-content: center;
   justify-items: center;
   padding-block: clamp(24px, 6vh, 72px);
   text-align: center;
+  pointer-events: none;
+}
+
+.hero-inner > * {
+  pointer-events: auto;
 }
 
 .hero-kicker {
@@ -1063,6 +1209,10 @@ html:has(.gallery[open]) {
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
+  }
+
+  .hero-shape {
+    animation: none;
   }
 }
 
